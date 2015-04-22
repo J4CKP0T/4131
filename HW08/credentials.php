@@ -143,7 +143,7 @@
 	            <input type="email" name="email" id="email" value="<?php echo $email;?>">
 	            <span class="error">* <?php echo $emailErr;?></span>
                 <br><br>
-	            <input type="submit" value="Submit" value="Submit">
+	            <input type="submit" value="Submit">
         	</form>
         </div>
     </body>
