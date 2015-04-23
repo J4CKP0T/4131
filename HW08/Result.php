@@ -54,6 +54,5 @@
                 <input type="submit" class="submit" value="Log Out">
             </form>
         </div>
-		<p>This page has been tested in Chrome</p>
 	</body>
 </html>
