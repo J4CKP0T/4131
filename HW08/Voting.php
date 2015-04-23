@@ -1,9 +1,9 @@
 <?php
-//session_start();
+session_start();
 	/* Check if a user is in session */
-//    if(!isset($_SESSION['name'])){
-//        header('Location: credentials.php');
-//    }
+    if(!isset($_SESSION['name'])){
+        header('Location: credentials.php');
+    }
 ?>
 
 
@@ -27,7 +27,7 @@
 					if (isset($_POST['submit'])) {
 							
 						/* Check if anything was selected */
-						$selected_radio = $_POST['cuisine'];
+						$selected_radio = $_POST['Cuisine'];
 						if (empty($_POST['cuisine'])) {
 							echo '<p class="error">Please make a selection</p>';
 							return;
