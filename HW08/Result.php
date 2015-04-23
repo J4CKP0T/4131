@@ -1,9 +1,9 @@
 <?php
-//	session_start();
+	session_start();
 	/* Check if a user is in session */
-//    if(!isset($_SESSION['name'])){
-//        header('Location: credentials.php');
-//    }
+    if(!isset($_SESSION['name'])){
+        header('Location: credentials.php');
+    }
 ?>
 
 <!DOCTYPE html>
