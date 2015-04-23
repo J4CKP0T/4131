@@ -51,38 +51,32 @@
 					$_SESSION['name'] = $name;
                     
                     //Set variables to connect with DB
-                    $servername = "egon";
+                    $servername = "egon.cs.umn.edu";
                     $username = "C4131S15U17";
                     $password = "3622";
                     $dbname = "C4131S15U17";
                     $port = "3307";
 
                     // Create connection
-                    $conn = mysqli($servername, $username, $password, $dbname, $port);
+                    $conn = new mysqli($servername, $username, $password, $dbname, $port);
                     // Check connection
                     if ($conn->connect_error) {
                         die("Connection failed: " . $conn->connect_error);
                     }
                     
                     // Check if USER table exists. Create it if it doesn't.
-                     if ($conn->query("SHOW TABLES LIKE 'USER'")->num_rows==0)
-                     {
-                        //Create USER table
-                        $sql = "CREATE TABLE USER ( Name VARCHAR(30) NOT NULL, 
-                                                    Email VARCHAR(50) PRIMARY KEY )";
-
-                        if ($conn->query($sql) === TRUE) {
-                            echo "Table USER created successfully";
-                        } else {
-                            echo "Error creating table: " . $conn->error;
-                        }
-                     }
+                    $sql = "CREATE TABLE IF NOT EXISTS USER(Name VARCHAR(30) NOT NULL, Email VARCHAR(50) PRIMARY KEY)";
+                    
+                    if ($conn->query($sql) === TRUE) {
+						echo "Table USER created successfully";
+                    } else {
+						echo "Error creating table: " . $conn->error;
+                    }
                      
                      //Query USER table for credentials obtained in results.
                      $sql = "SELECT Email 
                              FROM USER
                              WHERE Email = '$email'";
-                     $conn->query($sql);
                      $result = $conn->query($sql);
                      
                      //If they have registered before, the results screen is displayed with a message saying they have already voted.
@@ -106,28 +100,28 @@
             function validateCredentials($_name, $_email, $_nameErr, $_emailErr){
                 //Validate name
                 if (empty($_name)) {
-                    $nameErr = "Name is required";
+                    $_nameErr = "Name is required";
                     return 0;
                 } 
                 else {
-                    $name = test_input($_name);
+                    $_name = test_input($_name);
                     // check if name only contains letters and whitespace
                     if (!preg_match("/^[a-zA-Z ]*$/",$_name)) {
-                        $nameErr = "Only letters and white space allowed";                    
+                        $_nameErr = "Only letters and white space allowed";                    
                         return 0;
                     }
                 }
                     
                 //Validate email
                 if (empty($_email)) {
-                    $emailErr = "Email is required";
+                    $_emailErr = "Email is required";
                     return 0;
                 } 
                 else {
-                    $email = test_input($_email);
+                    $_email = test_input($_email);
                     // check if e-mail address is well-formed
                     if (!filter_var($_email, FILTER_VALIDATE_EMAIL)) {                   
-                        $emailErr = "Invalid email format";
+                        $_emailErr = "Invalid email format";
                         return 0;
                     }
                 }

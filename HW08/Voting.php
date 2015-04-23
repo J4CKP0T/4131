@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 1);
+
 session_start();
 	/* Check if a user is in session */
     if(!isset($_SESSION['name'])){
@@ -20,28 +22,23 @@ session_start();
         <div class="voteFormDiv">
             <?php
             
-                submitVote();
             
                 function submitVote() {
 		    	    /* Check if form was set */
-					if (isset($_POST['submit'])) {
+					if (isset($_POST['Cuisine'])) {
 							
 						/* Check if anything was selected */
 						$selected_radio = $_POST['Cuisine'];
-						if (empty($_POST['cuisine'])) {
-							echo '<p class="error">Please make a selection</p>';
-							return;
-						}
 						
 					    //Set variables to connect with DB
-                        $servername = "egon";
+                        $servername = "egon.cs.umn.edu";
                         $username = "C4131S15U17";
                         $password = "3622";
                         $dbname = "C4131S15U17";
                         $port = "3307";
 
                         // Create connection
-                        $conn = mysqli($servername, $username, $password, $dbname, $port);
+                        $conn = new mysqli($servername, $username, $password, $dbname, $port);
                         // Check connection
                         if ($conn->connect_error) {
                             die("Connection failed: " . $conn->connect_error);
@@ -50,19 +47,11 @@ session_start();
 						/* Check if VOTE table exists. If doesn't, create it
 						 * and initialize table values (all votes to zero).
 						 */
-						
-						if ($conn->query("SHOW TABLES LIKE 'VOTE'")->num_rows==0) {
-						     
-						     $sql = "CREATE TABLE VOTE ( Cuisine VARCHAR(20) PRIMARY KEY,
-                                     Count INT NOT NULL)";
+						$sql = "CREATE TABLE IF NOT EXISTS VOTE (Cuisine VARCHAR(20) PRIMARY KEY, Count INT NOT NULL)";
                                         
-                            if ($conn->query($sql) === TRUE) {
-                                echo "Table VOTE created successfully";
-                            } else {
-                                echo "Error creating table: " . $conn->error;
-                            }
-            
-                            //Insert initial Cuisines into VOTE table
+						if ($conn->query($sql) === TRUE) {
+							echo "Table VOTE created successfully";
+							//Insert initial Cuisines into VOTE table
                             $sql = "INSERT INTO VOTE(Cuisine, Count)
                                     VALUES ('Indian', 0);";
                             $conn->query($sql);
@@ -84,19 +73,30 @@ session_start();
                             $sql = "INSERT INTO VOTE(Cuisine, Count)
                                     VALUES ('Korean', 0);";
                             $conn->query($sql);
+						} else {
+							echo "Error creating table: " . $conn->error;
 						}
-							
-						/* Record vote in DB and go to result page */
-						$sql = "UPDATE VOTE SET Count = Count + 1 WHERE Cuisine = '$selected_radio'";
-						$conn->query($sql);
-						$conn->close();
-						header('Location: Result.php');
+            
+                            
 					}
-		        }
+					
+					else {
+							echo '<p class="error">Please make a selection</p>';
+							return;
+					}
+							
+					/* Record vote in DB and go to result page */
+					$sql = "UPDATE VOTE SET Count = Count + 1 WHERE Cuisine = '$selected_radio'";
+					$conn->query($sql);
+					$conn->close();
+					header('Location: Result.php');
+				}
+				
+                submitVote();
             ?>
             <form id="voteForm" action="Voting.php" method="post">
-                <input type="radio" name="Cuisine" value="Indian">
-    			Indian
+                <label><input type="radio" name="Cuisine" value="Indian">
+    			Indian</label>
     			<br>
 			    <input type="radio" name="Cuisine" value="Chinese">
     			Chinese
