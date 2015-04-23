@@ -18,7 +18,7 @@ Result.php:
 http://www-users.cselabs.umn.edu/~darma010/HW08/Result.php
 
 logoutResults.php:
-http://www-users.cselabs.umn.edu/~darma010/HW08/logout.php
+http://www-users.cselabs.umn.edu/~darma010/HW08/logoutResults.php
 
 Style.css:
 http://www-users.cselabs.umn.edu/~darma010/HW08/style.css
